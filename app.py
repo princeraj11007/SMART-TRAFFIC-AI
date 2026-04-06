@@ -175,18 +175,14 @@ with tab2:
     ax.bar(names, green_times)
     st.pyplot(fig)
 
-    # NEW GRAPH
     st.subheader("📈 Traffic vs Time")
     fig2, ax2 = plt.subplots()
     ax2.plot(st.session_state.history)
     st.pyplot(fig2)
 
-    # PEAK DETECTION
     if len(st.session_state.history) > 5:
         peak = max(st.session_state.history)
         st.warning(f"⚠ Peak Traffic Detected: {peak} vehicles")
-
-
 
 # ===== PERFORMANCE =====
 st.subheader("🚀 Smart Performance")
@@ -198,6 +194,27 @@ c1,c2,c3 = st.columns(3)
 c1.metric("🚀 Throughput", "100%")
 c2.metric("⏳ Avg Wait", f"{round(avg,1)} sec")
 c3.metric("🚗 Total Vehicles", sum(lanes))
+
+# ===== 🌱 ENVIRONMENT IMPACT =====
+st.subheader("🌱 Environmental Impact")
+
+total_vehicles = sum(lanes)
+avg_wait_time = sum(green_times) / 4
+wait_minutes = avg_wait_time / 60
+
+fuel_per_vehicle = 0.02
+fuel_consumed = total_vehicles * wait_minutes * fuel_per_vehicle
+fuel_saved = fuel_consumed * 0.3
+co2_reduced = fuel_saved * 2.31
+money_saved = fuel_saved * 100
+
+e1, e2, e3, e4 = st.columns(4)
+e1.metric("⛽ Fuel Saved (L)", round(fuel_saved, 2))
+e2.metric("🌍 CO₂ Reduced (kg)", round(co2_reduced, 2))
+e3.metric("💰 Money Saved (₹)", int(money_saved))
+e4.metric("⏱️ Avg Wait Time (s)", int(avg_wait_time))
+
+st.info("💡 AI reduces idle time → saves fuel & reduces pollution")
 
 # ===== ALERT =====
 if emergency != "None":
